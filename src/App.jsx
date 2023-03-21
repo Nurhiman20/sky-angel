@@ -1,9 +1,11 @@
 import './App.css';
 import { useState } from 'react';
 
-import airplaneImage from './assets/images/airplane.png';
-import { Airplane } from "./components/AirplaneComponent";
 import { Container } from './components/ContainerComponent';
+import { Airplane } from './components/AirplaneComponent';
+import { Cloud } from './components/CloudComponent';
+import airplaneImage from './assets/images/airplane.png';
+import cloudImage from './assets/images/cloud.png';
 
 const App = () => {
 	const containerWidth = 1024;
@@ -58,6 +60,10 @@ const App = () => {
 	return (
 		<div className="App" onKeyDown={handleKeyDown} tabIndex="0">
 			<Container width={containerWidth} height={containerHeight}>
+				<Cloud className="cloud">
+					<img src={cloudImage} id="cloud-1" />
+					<img src={cloudImage} id="cloud-2" />
+				</Cloud>
 				<Airplane
 					className="airplane"
 					top={topPlanePosition}
