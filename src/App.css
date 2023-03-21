@@ -2,17 +2,6 @@
     margin: 0 auto;
 }
 
-.container {
-    width: 1024px;
-    height: 768px;
-    background-color: skyblue;
-}
-
-.airplane {
-    width: 120px;
-    height: 90px;
-}
-
 .airplane img {
     width: 120px;
     height: 90px;
