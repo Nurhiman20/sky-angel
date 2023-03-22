@@ -5,4 +5,5 @@ export const Container = styled.div`
 	height: ${(props) => props.height}px;
 	background-color: skyblue;
 	position: relative;
+  overflow: hidden;
 `;

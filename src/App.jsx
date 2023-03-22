@@ -1,11 +1,14 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Container } from './components/ContainerComponent';
 import { Airplane } from './components/AirplaneComponent';
 import { Cloud } from './components/CloudComponent';
+import { Bird } from './components/BirdComponent';
+
 import airplaneImage from './assets/images/airplane.png';
 import cloudImage from './assets/images/cloud.png';
+import birdImage from './assets/images/bird.png';
 
 const App = () => {
 	const containerWidth = 1024;
@@ -57,6 +60,31 @@ const App = () => {
 		}
 	};
 
+	const [birdLeftPosition, setBirdLeftPosition] = useState(containerWidth + 80);
+	const [birdHighPosition, setBirdHighPosition] = useState(200);
+	const generateRandomInt = () => {
+		const min = 20;
+		const max = 740;
+		const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+
+		return randomInt
+	};
+
+	useEffect(() => {
+    let birdId;
+    if (birdLeftPosition >= -80) {
+      birdId = setInterval(() => {
+        setBirdLeftPosition((birdLeftPosition) => birdLeftPosition - 5)
+      }, 5);
+      return () => {
+        clearInterval(birdId)
+      }
+    } else {
+      setBirdLeftPosition(containerWidth)
+      setBirdHighPosition(generateRandomInt())
+    }
+	});
+
 	return (
 		<div className="App" onKeyDown={handleKeyDown} tabIndex="0">
 			<Container width={containerWidth} height={containerHeight}>
@@ -64,6 +92,9 @@ const App = () => {
 					<img src={cloudImage} id="cloud-1" />
 					<img src={cloudImage} id="cloud-2" />
 				</Cloud>
+				<Bird className="bird" top={birdHighPosition} left={birdLeftPosition}>
+					<img src={birdImage} />
+				</Bird>
 				<Airplane
 					className="airplane"
 					top={topPlanePosition}

@@ -8,13 +8,6 @@
     object-fit: contain;
 }
 
-.cloud {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
 .cloud img {
     width: 220px;
     object-fit: contain;
@@ -23,12 +16,17 @@
 
 .cloud #cloud-1 {
     top: 150px;
-    animation: move-1 5s infinite linear;
+    animation: move-1 7s infinite linear;
 }
 
 .cloud #cloud-2 {
     top: 400px;
-    animation: move-2 5s infinite linear;
+    animation: move-2 7s infinite linear;
+}
+
+.bird img {
+    width: 80px;
+    object-fit: contain;
 }
 
 @keyframes move-1 {
