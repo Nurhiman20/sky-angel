@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Container } from './components/ContainerComponent';
 import { Airplane } from './components/AirplaneComponent';
@@ -9,21 +9,24 @@ import { Bird } from './components/BirdComponent';
 import airplaneImage from './assets/images/airplane.png';
 import cloudImage from './assets/images/cloud.png';
 import birdImage from './assets/images/bird.png';
+import { ContainerInfo } from './components/ContainerInfoComponent';
 
 const App = () => {
+	const containerRef = useRef(null);
 	const containerWidth = 1024;
 	const containerHeight = 768;
 	const airplaneWidth = 120;
 	const airplaneHeight = 90;
 	const airplaneSpeed = 100;
-	const [gameHasStarted, setGameHasStarted] = useState(true);
+	const [gameHasStarted, setGameHasStarted] = useState(false);
+	const [gameHasOver, setGameHasOver] = useState(false);
 	const [topPlanePosition, setTopPlanePosition] = useState(380);
 	const [leftPlanePosition, setLeftPlanePosition] = useState(0);
 
 	const handleKeyDown = (event) => {
 		let newTopPlanePosition = topPlanePosition;
 		let newLeftPlanePosition = leftPlanePosition;
-		if (event.key == ' ') {
+		if (event.key == ' ' && !gameHasOver) {
 			setGameHasStarted(!gameHasStarted);
 		}
 		if (!gameHasStarted) {
@@ -75,10 +78,11 @@ const App = () => {
 		return randomInt;
 	};
 
-
-	const [leftCloudPosition, setLeftCloudPosition] = useState(containerWidth + 220);
+	const [leftCloudPosition, setLeftCloudPosition] = useState(
+		containerWidth + 220
+	);
 	const [topCloudPosition, setTopCloudPosition] = useState(200);
-  useEffect(() => {
+	useEffect(() => {
 		let cloudId;
 		if (gameHasStarted && leftCloudPosition >= -220) {
 			cloudId = setInterval(() => {
@@ -91,8 +95,7 @@ const App = () => {
 			setLeftCloudPosition(containerWidth);
 			setTopCloudPosition(generateRandomInt());
 		}
-  })
-
+	}, [gameHasStarted, leftCloudPosition]);
 
 	const [leftBirdPosition, setLeftBirdPosition] = useState(containerWidth + 80);
 	const [topBirdPosition, setTopBirdPosition] = useState(200);
@@ -109,7 +112,7 @@ const App = () => {
 			setLeftBirdPosition(containerWidth);
 			setTopBirdPosition(generateRandomInt());
 		}
-	});
+	}, [gameHasStarted, leftBirdPosition]);
 
 	useEffect(() => {
 		const topPositionColladed =
@@ -124,13 +127,29 @@ const App = () => {
 				leftPlanePosition + airplaneWidth <= leftBirdPosition + 80);
 		if (topPositionColladed && leftPositionColladed) {
 			setGameHasStarted(false);
+			setGameHasOver(true);
 		}
 	}, [topPlanePosition, topBirdPosition, leftPlanePosition, leftBirdPosition]);
 
+	const startGame = () => {
+		setGameHasStarted(true);
+		setGameHasOver(false);
+		containerRef.current.focus();
+	};
+
 	return (
-		<div className="App" onKeyDown={handleKeyDown} tabIndex="0">
+		<div
+			className="App"
+			onKeyDown={handleKeyDown}
+			ref={containerRef}
+			tabIndex="0"
+		>
 			<Container width={containerWidth} height={containerHeight}>
-				<Cloud className="cloud" top={topCloudPosition} left={leftCloudPosition}>
+				<Cloud
+					className="cloud"
+					top={topCloudPosition}
+					left={leftCloudPosition}
+				>
 					<img src={cloudImage} />
 				</Cloud>
 				<Bird className="bird" top={topBirdPosition} left={leftBirdPosition}>
@@ -145,6 +164,28 @@ const App = () => {
 				>
 					<img src={airplaneImage} />
 				</Airplane>
+				{!gameHasStarted && !gameHasOver ? (
+					<ContainerInfo>
+						<div className="overlay"></div>
+						<div className="game-over-container">
+							<h1 className="text-white">SKY ANGEL</h1>
+							<button type="button" onClick={startGame}>
+								Start Game
+							</button>
+						</div>
+					</ContainerInfo>
+				) : null}
+				{gameHasOver ? (
+					<ContainerInfo>
+						<div className="overlay"></div>
+						<div className="game-over-container">
+							<h1 className="text-white">GAME OVER</h1>
+							<button type="button" onClick={startGame}>
+								Play Again
+							</button>
+						</div>
+					</ContainerInfo>
+				) : null}
 			</Container>
 		</div>
 	);
