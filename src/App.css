@@ -26,14 +26,30 @@
     position: absolute;
 }
 
-.game-over-container {
+.game-info-container {
     position: relative;
     width: 100%;
     height: 100%;
-    text-align: center;
-    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .text-white {
     color: white;
+}
+
+.time-container {
+    color: black;
+}
+
+.time-title {
+    margin: 0;
+}
+
+.time {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
 }

@@ -10,6 +10,9 @@ import airplaneImage from './assets/images/airplane.png';
 import cloudImage from './assets/images/cloud.png';
 import birdImage from './assets/images/bird.png';
 import { ContainerInfo } from './components/ContainerInfoComponent';
+import { AppBar } from './components/AppBarComponent';
+import Stopwatch from './components/StopwatchComponent';
+import { calculateTime } from './assets/helpers';
 
 const App = () => {
 	const containerRef = useRef(null);
@@ -22,6 +25,8 @@ const App = () => {
 	const [gameHasOver, setGameHasOver] = useState(false);
 	const [topPlanePosition, setTopPlanePosition] = useState(380);
 	const [leftPlanePosition, setLeftPlanePosition] = useState(0);
+
+	const [time, setTime] = useState(0);
 
 	const handleKeyDown = (event) => {
 		let newTopPlanePosition = topPlanePosition;
@@ -132,9 +137,14 @@ const App = () => {
 	}, [topPlanePosition, topBirdPosition, leftPlanePosition, leftBirdPosition]);
 
 	const startGame = () => {
+		setTime(0);
 		setGameHasStarted(true);
 		setGameHasOver(false);
 		containerRef.current.focus();
+	};
+
+	const changeTime = (newTime) => {
+		setTime(newTime);
 	};
 
 	return (
@@ -164,10 +174,20 @@ const App = () => {
 				>
 					<img src={airplaneImage} />
 				</Airplane>
+				<AppBar>
+					<div className='time-container'>
+            <p className='time-title'>Time Flight</p>
+						<Stopwatch
+							time={time}
+							onTimeChanged={changeTime}
+							gameStarted={gameHasStarted}
+						></Stopwatch>
+					</div>
+				</AppBar>
 				{!gameHasStarted && !gameHasOver ? (
 					<ContainerInfo>
 						<div className="overlay"></div>
-						<div className="game-over-container">
+						<div className="game-info-container">
 							<h1 className="text-white">SKY ANGEL</h1>
 							<button type="button" onClick={startGame}>
 								Start Game
@@ -178,8 +198,9 @@ const App = () => {
 				{gameHasOver ? (
 					<ContainerInfo>
 						<div className="overlay"></div>
-						<div className="game-over-container">
+						<div className="game-info-container">
 							<h1 className="text-white">GAME OVER</h1>
+							<p>Your time: {calculateTime(time)}</p>
 							<button type="button" onClick={startGame}>
 								Play Again
 							</button>
