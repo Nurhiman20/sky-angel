@@ -176,7 +176,7 @@ const App = () => {
 				</Airplane>
 				<AppBar>
 					<div className='time-container'>
-            <p className='time-title'>Time Flight</p>
+            <p className='time-title'>Flight Time</p>
 						<Stopwatch
 							time={time}
 							onTimeChanged={changeTime}
