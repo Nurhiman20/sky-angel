@@ -67,8 +67,6 @@ const App = () => {
 		}
 	};
 
-	const [leftBirdPosition, setLeftBirdPosition] = useState(containerWidth + 80);
-	const [topBirdPosition, setTopBirdPosition] = useState(200);
 	const generateRandomInt = () => {
 		const min = 20;
 		const max = 740;
@@ -77,12 +75,33 @@ const App = () => {
 		return randomInt;
 	};
 
+
+	const [leftCloudPosition, setLeftCloudPosition] = useState(containerWidth + 220);
+	const [topCloudPosition, setTopCloudPosition] = useState(200);
+  useEffect(() => {
+		let cloudId;
+		if (gameHasStarted && leftCloudPosition >= -220) {
+			cloudId = setInterval(() => {
+				setLeftCloudPosition((leftCloudPosition) => leftCloudPosition - 5);
+			}, 20);
+			return () => {
+				clearInterval(cloudId);
+			};
+		} else {
+			setLeftCloudPosition(containerWidth);
+			setTopCloudPosition(generateRandomInt());
+		}
+  })
+
+
+	const [leftBirdPosition, setLeftBirdPosition] = useState(containerWidth + 80);
+	const [topBirdPosition, setTopBirdPosition] = useState(200);
 	useEffect(() => {
 		let birdId;
 		if (gameHasStarted && leftBirdPosition >= -80) {
 			birdId = setInterval(() => {
-				setLeftBirdPosition((leftBirdPosition) => leftBirdPosition - 5);
-			}, 5);
+				setLeftBirdPosition((leftBirdPosition) => leftBirdPosition - 10);
+			}, 20);
 			return () => {
 				clearInterval(birdId);
 			};
@@ -111,9 +130,8 @@ const App = () => {
 	return (
 		<div className="App" onKeyDown={handleKeyDown} tabIndex="0">
 			<Container width={containerWidth} height={containerHeight}>
-				<Cloud className="cloud">
-					<img src={cloudImage} id="cloud-1" />
-					<img src={cloudImage} id="cloud-2" />
+				<Cloud className="cloud" top={topCloudPosition} left={leftCloudPosition}>
+					<img src={cloudImage} />
 				</Cloud>
 				<Bird className="bird" top={topBirdPosition} left={leftBirdPosition}>
 					<img src={birdImage} />

@@ -11,38 +11,9 @@
 .cloud img {
     width: 220px;
     object-fit: contain;
-    position: absolute;
-}
-
-.cloud #cloud-1 {
-    top: 150px;
-    animation: move-1 7s infinite linear;
-}
-
-.cloud #cloud-2 {
-    top: 400px;
-    animation: move-2 7s infinite linear;
 }
 
 .bird img {
     width: 80px;
     object-fit: contain;
-}
-
-@keyframes move-1 {
-    0% {
-        left: 1025px;
-    }
-    100% {
-        left: -1225px;
-    }
-}
-
-@keyframes move-2 {
-    0% {
-        left: 2050px;
-    }
-    100% {
-        left: -200px;
-    }
 }
