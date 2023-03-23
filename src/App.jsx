@@ -16,12 +16,19 @@ const App = () => {
 	const airplaneWidth = 120;
 	const airplaneHeight = 90;
 	const airplaneSpeed = 100;
+	const [gameHasStarted, setGameHasStarted] = useState(true);
 	const [topPlanePosition, setTopPlanePosition] = useState(380);
 	const [leftPlanePosition, setLeftPlanePosition] = useState(0);
 
 	const handleKeyDown = (event) => {
 		let newTopPlanePosition = topPlanePosition;
 		let newLeftPlanePosition = leftPlanePosition;
+		if (event.key == ' ') {
+			setGameHasStarted(!gameHasStarted);
+		}
+		if (!gameHasStarted) {
+			return false;
+		}
 		switch (event.key) {
 			case 'ArrowLeft':
 				newLeftPlanePosition -= airplaneSpeed;
@@ -60,30 +67,46 @@ const App = () => {
 		}
 	};
 
-	const [birdLeftPosition, setBirdLeftPosition] = useState(containerWidth + 80);
-	const [birdHighPosition, setBirdHighPosition] = useState(200);
+	const [leftBirdPosition, setLeftBirdPosition] = useState(containerWidth + 80);
+	const [topBirdPosition, setTopBirdPosition] = useState(200);
 	const generateRandomInt = () => {
 		const min = 20;
 		const max = 740;
 		const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
 
-		return randomInt
+		return randomInt;
 	};
 
 	useEffect(() => {
-    let birdId;
-    if (birdLeftPosition >= -80) {
-      birdId = setInterval(() => {
-        setBirdLeftPosition((birdLeftPosition) => birdLeftPosition - 5)
-      }, 5);
-      return () => {
-        clearInterval(birdId)
-      }
-    } else {
-      setBirdLeftPosition(containerWidth)
-      setBirdHighPosition(generateRandomInt())
-    }
+		let birdId;
+		if (gameHasStarted && leftBirdPosition >= -80) {
+			birdId = setInterval(() => {
+				setLeftBirdPosition((leftBirdPosition) => leftBirdPosition - 5);
+			}, 5);
+			return () => {
+				clearInterval(birdId);
+			};
+		} else {
+			setLeftBirdPosition(containerWidth);
+			setTopBirdPosition(generateRandomInt());
+		}
 	});
+
+	useEffect(() => {
+		const topPositionColladed =
+			(topPlanePosition >= topBirdPosition &&
+				topPlanePosition <= topBirdPosition + 80) ||
+			(topPlanePosition + airplaneHeight >= topBirdPosition &&
+				topPlanePosition + airplaneHeight <= topBirdPosition + 80);
+		const leftPositionColladed =
+			(leftPlanePosition >= leftBirdPosition &&
+				leftPlanePosition <= leftBirdPosition + 80) ||
+			(leftPlanePosition + airplaneWidth >= leftBirdPosition &&
+				leftPlanePosition + airplaneWidth <= leftBirdPosition + 80);
+		if (topPositionColladed && leftPositionColladed) {
+			setGameHasStarted(false);
+		}
+	}, [topPlanePosition, topBirdPosition, leftPlanePosition, leftBirdPosition]);
 
 	return (
 		<div className="App" onKeyDown={handleKeyDown} tabIndex="0">
@@ -92,7 +115,7 @@ const App = () => {
 					<img src={cloudImage} id="cloud-1" />
 					<img src={cloudImage} id="cloud-2" />
 				</Cloud>
-				<Bird className="bird" top={birdHighPosition} left={birdLeftPosition}>
+				<Bird className="bird" top={topBirdPosition} left={leftBirdPosition}>
 					<img src={birdImage} />
 				</Bird>
 				<Airplane
