@@ -1,18 +1,18 @@
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
 
-import { Container } from './components/ContainerComponent';
-import { Airplane } from './components/AirplaneComponent';
-import { Cloud } from './components/CloudComponent';
-import { Bird } from './components/BirdComponent';
+import Container from './components/ContainerComponent';
+import Airplane from './components/AirplaneComponent';
+import Cloud from './components/CloudComponent';
+import Bird from './components/BirdComponent';
+import ContainerInfo from './components/ContainerInfoComponent';
+import AppBar from './components/AppBarComponent';
+import Stopwatch from './components/StopwatchComponent';
 
 import airplaneImage from './assets/images/airplane.png';
 import cloudImage from './assets/images/cloud.png';
 import birdImage from './assets/images/bird.png';
-import { ContainerInfo } from './components/ContainerInfoComponent';
-import { AppBar } from './components/AppBarComponent';
-import Stopwatch from './components/StopwatchComponent';
-import { calculateTime } from './assets/helpers';
+import { calculateTime } from './helpers';
 
 const App = () => {
 	const containerRef = useRef(null);

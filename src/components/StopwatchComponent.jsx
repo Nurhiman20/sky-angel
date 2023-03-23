@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { calculateTime } from '../assets/helpers';
+import { calculateTime } from '../helpers';
 
 const Stopwatch = (props) => {
 	// state to store time
